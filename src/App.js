@@ -1,4 +1,4 @@
-// src/App.jsx
+import './Component/i18n';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import BlogList from './Component/BlogList';  // Import BlogList component

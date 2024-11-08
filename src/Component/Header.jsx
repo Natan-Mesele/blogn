@@ -1,20 +1,25 @@
 import React, { useState } from "react";
 import { FaAngleDown, FaSearch } from "react-icons/fa";
 import { MdLanguage } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
+  const { t, i18n } = useTranslation();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('English');
-  const [searchQuery, setSearchQuery] = useState("");
 
   const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);
 
   const handleLanguageChange = (language) => {
-    setSelectedLanguage(language);
-    setDropdownOpen(false);
+    const langCode = language === 'English' ? 'en' : language === 'Spanish' ? 'es' : 'fr';
+    console.log(`Changing language to: ${langCode}`);
+    
+    i18n.changeLanguage(langCode)
+      .then(() => {
+        console.log(`Current language set to: ${i18n.language}`);
+        setDropdownOpen(false);
+      })
+      .catch((error) => console.error("Failed to change language", error));
   };
-
-  const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
   return (
     <header className="flex justify-between items-center p-5 bg-white border-b border-gray-200 shadow-md">
@@ -23,9 +28,9 @@ const Header = () => {
       </div>
 
       <nav className="flex space-x-8">
-        <a href="#about" className="text-gray-700 hover:text-blue-500">About</a>
-        <a href="#contact" className="text-gray-700 hover:text-blue-500">Contact</a>
-        <a href="#vision" className="text-gray-700 hover:text-blue-500">Vision</a>
+        <a href="#about" className="text-gray-700 hover:text-blue-500">{t('about')}</a>
+        <a href="#contact" className="text-gray-700 hover:text-blue-500">{t('contact')}</a>
+        <a href="#vision" className="text-gray-700 hover:text-blue-500">{t('vision')}</a>
       </nav>
 
       <div className="flex items-center space-x-4">
@@ -33,9 +38,7 @@ const Header = () => {
         <div className="relative">
           <input
             type="text"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            placeholder="Search..."
+            placeholder={t('search')}
             className="px-4 py-2 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <FaSearch className="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-500" />
@@ -48,7 +51,7 @@ const Header = () => {
             className="flex items-center text-gray-700 hover:text-blue-500 p-2 bg-transparent border-none cursor-pointer"
           >
             <MdLanguage className="mr-2" />
-            {selectedLanguage} 
+            {i18n.language === 'en' ? 'English' : i18n.language === 'es' ? 'Spanish' : 'French'}
             <FaAngleDown className="ml-2" />
           </button>
 
@@ -72,7 +75,6 @@ const Header = () => {
               >
                 French
               </li>
-              {/* Add more languages as needed */}
             </ul>
           )}
         </div>

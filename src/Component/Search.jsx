@@ -1,14 +1,18 @@
+// Search.js
 import React, { useState } from "react";
 import { FaSearch, FaAngleDown } from "react-icons/fa";
 
-const Search = () => {
+const Search = ({ onFilterChange }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedContinent, setSelectedContinent] = useState("All");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [continentDropdownOpen, setContinentDropdownOpen] = useState(false);
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
 
-  const handleSearchQueryChange = (e) => setSearchQuery(e.target.value);
+  const handleSearchQueryChange = (e) => {
+    setSearchQuery(e.target.value);
+    onFilterChange(e.target.value, selectedContinent, selectedCategory);
+  };
 
   const toggleContinentDropdown = () => setContinentDropdownOpen(!continentDropdownOpen);
   const toggleCategoryDropdown = () => setCategoryDropdownOpen(!categoryDropdownOpen);
@@ -16,11 +20,13 @@ const Search = () => {
   const handleContinentChange = (continent) => {
     setSelectedContinent(continent);
     setContinentDropdownOpen(false);
+    onFilterChange(searchQuery, continent, selectedCategory);
   };
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
     setCategoryDropdownOpen(false);
+    onFilterChange(searchQuery, selectedContinent, category);
   };
 
   return (
@@ -48,42 +54,10 @@ const Search = () => {
         </div>
         {continentDropdownOpen && (
           <ul className="absolute top-full left-0 mt-1 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-            <li
-              onClick={() => handleContinentChange("Africa")}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-            >
-              Africa
-            </li>
-            <li
-              onClick={() => handleContinentChange("Asia")}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-            >
-              Asia
-            </li>
-            <li
-              onClick={() => handleContinentChange("Europe")}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-            >
-              Europe
-            </li>
-            <li
-              onClick={() => handleContinentChange("North America")}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-            >
-              North America
-            </li>
-            <li
-              onClick={() => handleContinentChange("South America")}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-            >
-              South America
-            </li>
-            <li
-              onClick={() => handleContinentChange("Australia")}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-            >
-              Australia
-            </li>
+            <li onClick={() => handleContinentChange("All")} className="px-4 py-2 cursor-pointer hover:bg-gray-100">All</li>
+            <li onClick={() => handleContinentChange("Africa")} className="px-4 py-2 cursor-pointer hover:bg-gray-100">Africa</li>
+            <li onClick={() => handleContinentChange("Asia")} className="px-4 py-2 cursor-pointer hover:bg-gray-100">Asia</li>
+            {/* Add more continents as needed */}
           </ul>
         )}
       </div>
@@ -99,42 +73,10 @@ const Search = () => {
         </div>
         {categoryDropdownOpen && (
           <ul className="absolute top-full left-0 mt-1 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-            <li
-              onClick={() => handleCategoryChange("Science")}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-            >
-              Science
-            </li>
-            <li
-              onClick={() => handleCategoryChange("Technology")}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-            >
-              Technology
-            </li>
-            <li
-              onClick={() => handleCategoryChange("Health")}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-            >
-              Health
-            </li>
-            <li
-              onClick={() => handleCategoryChange("Education")}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-            >
-              Education
-            </li>
-            <li
-              onClick={() => handleCategoryChange("Lifestyle")}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-            >
-              Lifestyle
-            </li>
-            <li
-              onClick={() => handleCategoryChange("Travel")}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-            >
-              Travel
-            </li>
+            <li onClick={() => handleCategoryChange("All")} className="px-4 py-2 cursor-pointer hover:bg-gray-100">All</li>
+            <li onClick={() => handleCategoryChange("Science")} className="px-4 py-2 cursor-pointer hover:bg-gray-100">Science</li>
+            <li onClick={() => handleCategoryChange("Technology")} className="px-4 py-2 cursor-pointer hover:bg-gray-100">Technology</li>
+            {/* Add more categories as needed */}
           </ul>
         )}
       </div>
